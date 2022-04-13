@@ -1,0 +1,46 @@
+header,
+footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    box-shadow: 0 0 30px #e5e5e5;
+    padding: 15px 25px;
+}
+
+header {
+    top: 0;
+}
+
+header ion-icon {
+    font-size: 45px;
+}
+
+main {
+    background-color: #a5a5a5;
+    font-size: 14px;
+}
+
+main,
+footer>input {
+    font-family: roboto, sans-serif;
+    font-weight: 400;
+    font-style: italic;
+}
+
+footer {
+    bottom: 0;
+}
+
+footer>input {
+    background-color: #fff;
+    text-decoration: none;
+    width: 90%;
+    border: none;
+    font-size: 18px;
+}
+
+footer ion-icon {
+    font-size: 30px;
+}
