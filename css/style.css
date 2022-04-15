@@ -18,15 +18,53 @@ header ion-icon {
 }
 
 main {
-    background-color: #a5a5a5;
     font-size: 14px;
+}
+
+main p {
+    margin: 0 2%;
 }
 
 main,
 footer>input {
     font-family: roboto, sans-serif;
     font-weight: 400;
-    font-style: italic;
+}
+
+.area-batepapo {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 14%;
+}
+
+.box-message,
+.publicMessage,
+.privateMessage,
+.statusMessage {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    word-break: break-all;
+    padding: 1% 0;
+    margin: 1% 0;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.privateMessage {
+    background-color: #FFDEDE;
+}
+
+.statusMessage {
+    background-color: #DCDCDC;
+}
+
+span {
+    font-weight: 700;
+    font-size: 14px;
 }
 
 footer {
@@ -35,7 +73,6 @@ footer {
 
 footer>input {
     background-color: #fff;
-    text-decoration: none;
     width: 90%;
     border: none;
     font-size: 18px;
