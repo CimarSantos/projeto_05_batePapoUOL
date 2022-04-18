@@ -1,57 +1,98 @@
-const userName = prompt("Nome de usuário: ");
+const entraParticipantes = "https://mock-api.driven.com.br/api/v6/uol/participants";
 
-const entra = axios.post("https://mock-api.driven.com.br/api/v6/uol/participants", { name: userName });
-entra.then(conexao);
-entra.then(puxaChat);
 
-function conexao(response) {
-    const status = response.status;
+const statusUser = axios.post("https://mock-api.driven.com.br/api/v6/uol/status");
+const mensagens = axios.get("https://mock-api.driven.com.br/api/v6/uol/messages");
+const messageToServer = axios.post("https://mock-api.driven.com.br/api/v6/uol/messages");
 
-    setInterval(function() {
+let sendUser;
+let Usuario;
+let userName;
+let server;
 
-        const promise = axios.post("https://mock-api.driven.com.br/api/v6/uol/status", { name: userName });
-        promise.then(response => console.log(response.status));
-        promise.catch(response => console.log(erro.response.status));
 
-    }, 5000);
+function entraNaSala() {
+    userName = { name: prompt("Nome de usuário: ") }
+
+    sendUser = axios.post(entraParticipantes, userName);
+
+    sendUser.then(entraNaSala);
+    sendUser.catch((response) => { verificacao() });
 }
 
-function puxaChat(response) {
-    const promise = axios.get("https://mock-api.driven.com.br/api/v6/uol/messages");
-    promise.then(response => {
-        console.log(response.data);
+entraNaSala();
+
+function verificacao() {
+    Usuario = axios.post(statusUser, userName);
+
+    Usuario.then((response) => {
+
+    })
+
+    Usuario.catch((error) => {
+        windo.location.reload();
+    })
+}
+
+function continuaVerificando() {
+    setInterval(verificacao, 5000);
+}
+
+function mostaUsuario() {
+    const promise = axios.get(mensagens);
+    promise.then(mostraChat);
+}
+
+mostaUsuario();
+
+function mostraChat(response) {
+    console.log(response)
+    for (let i = 0; i < response.data.length; i++) {
+        const m = response.data[i]
+        const boxMensagem = document.querySelector(".box-message")
+        if (response.data[i].text == "entra na sala..." && response.data[i].type == "status") {
+
+            boxMensagem.innerHTML += `<div class="statusMessage">${response.data[i].time} <b>${response.data[i].from}</b> ${response.data[i].text}</div>`
+        }
+        if (response.data[i].type == "message" && response.data[i].to == "Todos") {
+            boxMensagem.innerHTML += `<div class="publicMessage">${response.data[i].time}<b>${response.data[i].from} </b><span> para <b>todos</b>:</span> ${response.data[i].text}</div>`
+        }
+        if (response.data[i].type == "message" && response.data[i].to != "Todos") {
+            boxMensagem.innerHTML += `<div class="publicMessage">${response.data[i].time}<b>${response.data[i].from} </b><span> para <b>${response.data[i].to}</b>:</span> ${response.data[i].text}</div>`
+        }
+        if (response.data[i].type == "private_message") {
+            boxMensagem.innerHTML += `<div class="privateMessage">${response.data[i].time}<b>${response.data[i].from} </b><span> reservadamente para: <b>${response.data[i].to}</b>:</span> ${response.data[i].text}</div>`
+        }
+    }
+}
+
+setInterval(() => {
+    const atualizacao = axios(mensagens);
+    atualizacao.then(mostraChat);
+
+}, 3000)
+
+function mandaMensagem() {
+
+    const mensagemEnviada = document.querySelectorAll("input").value;
+
+    corpoMensagem = {
+        from: userName.name,
+        to: "Todos",
+        text: mensagemEnviada,
+        type: "message",
+    };
+
+    messageToServer = axios.post(mensagens, mensagemEnviada);
+    messageToServer.then((response) => {
+        toServer = axios(mensagens);
+        toServer.then(mostraChat);
     });
-    setInterval(puxaChat, 3000);
+    messageToServer.catch((error) => {
+        window.location.reload();
+    })
 }
 
 
-
-
-
-
-
-
-/* let chat;
-let mensagem = document.querySelector(".box-message"); */
-
-/* function puxaChat(buscando) {
-
-    let time = buscando.data.time;
-    let from = buscando.data.from;
-
-    mostrandoMensagem(time, from, to, type, text);
-
-
-} */
-
-/* function mostrandoMensagem(time, from, to, type, text) {
-
-    chat = [{
-        from: "",
-        to: "",
-        text: "",
-        type: "",
-        time: ""
-    }]
-    mensagem.innerHTML += `${time} ${from} ${to} ${type} ${text}`;
-} */
+const fimDePapo = document.querySelector(".input-area");
+fimDePapo.scrollIntoView(false);
