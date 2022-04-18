@@ -1,9 +1,6 @@
 const entraParticipantes = "https://mock-api.driven.com.br/api/v6/uol/participants";
-
-
-const statusUser = axios.post("https://mock-api.driven.com.br/api/v6/uol/status");
-const mensagens = axios.get("https://mock-api.driven.com.br/api/v6/uol/messages");
-const messageToServer = axios.post("https://mock-api.driven.com.br/api/v6/uol/messages");
+const statusUser = "https://mock-api.driven.com.br/api/v6/uol/status";
+const mensagens = "https://mock-api.driven.com.br/api/v6/uol/messages";
 
 let sendUser;
 let Usuario;
@@ -19,8 +16,6 @@ function entraNaSala() {
     sendUser.then(entraNaSala);
     sendUser.catch((response) => { verificacao() });
 }
-
-entraNaSala();
 
 function verificacao() {
     Usuario = axios.post(statusUser, userName);
@@ -46,13 +41,14 @@ function mostaUsuario() {
 mostaUsuario();
 
 function mostraChat(response) {
-    console.log(response)
+    console.log(response.data)
+    let areaChat = document.querySelector(".box-message");
     for (let i = 0; i < response.data.length; i++) {
         const m = response.data[i]
-        const boxMensagem = document.querySelector(".box-message")
+        const boxMensagem = document.querySelector(".box-message");
         if (response.data[i].text == "entra na sala..." && response.data[i].type == "status") {
 
-            boxMensagem.innerHTML += `<div class="statusMessage">${response.data[i].time} <b>${response.data[i].from}</b> ${response.data[i].text}</div>`
+            boxMensagem.innerHTML += `<div class="statusMessage"> ${response.data[i].time} <b>${response.data[i].from}</b> ${response.data[i].text}</div>`
         }
         if (response.data[i].type == "message" && response.data[i].to == "Todos") {
             boxMensagem.innerHTML += `<div class="publicMessage">${response.data[i].time}<b>${response.data[i].from} </b><span> para <b>todos</b>:</span> ${response.data[i].text}</div>`
@@ -63,6 +59,7 @@ function mostraChat(response) {
         if (response.data[i].type == "private_message") {
             boxMensagem.innerHTML += `<div class="privateMessage">${response.data[i].time}<b>${response.data[i].from} </b><span> reservadamente para: <b>${response.data[i].to}</b>:</span> ${response.data[i].text}</div>`
         }
+        areaChat.scrollIntoView(false);
     }
 }
 
@@ -72,12 +69,14 @@ setInterval(() => {
 
 }, 3000)
 
+
+
 function mandaMensagem() {
 
     const mensagemEnviada = document.querySelectorAll("input").value;
 
     corpoMensagem = {
-        from: userName.name,
+        from: userName,
         to: "Todos",
         text: mensagemEnviada,
         type: "message",
@@ -85,14 +84,10 @@ function mandaMensagem() {
 
     messageToServer = axios.post(mensagens, mensagemEnviada);
     messageToServer.then((response) => {
-        toServer = axios(mensagens);
-        toServer.then(mostraChat);
+        corpoMensagem = axios.post(mensagens);
+        /* toServer.then(mostraChat); */
     });
     messageToServer.catch((error) => {
         window.location.reload();
     })
 }
-
-
-const fimDePapo = document.querySelector(".input-area");
-fimDePapo.scrollIntoView(false);

@@ -5,8 +5,9 @@ footer {
     justify-content: space-between;
     align-items: center;
     position: fixed;
-    box-shadow: 0 0 30px #e5e5e5;
+    box-shadow: 0 0 50px #e5e5e5;
     padding: 15px 25px;
+    background-color: #fff;
 }
 
 header {
@@ -35,7 +36,6 @@ footer>input {
     width: 100%;
     display: flex;
     align-items: center;
-    position: absolute;
     top: 14%;
 }
 
@@ -76,6 +76,11 @@ footer>input {
     width: 90%;
     border: none;
     font-size: 18px;
+}
+
+button {
+    background-color: #fff;
+    border: none;
 }
 
 footer ion-icon {
