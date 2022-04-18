@@ -48,16 +48,16 @@ function mostraChat(response) {
         const boxMensagem = document.querySelector(".box-message");
         if (response.data[i].text == "entra na sala..." && response.data[i].type == "status") {
 
-            boxMensagem.innerHTML += `<div class="statusMessage"> ${response.data[i].time} <b>${response.data[i].from}</b> ${response.data[i].text}</div>`
+            boxMensagem.innerHTML += `<div class="statusMessage"> <p class="letra-time">(${response.data[i].time})</p> <p><span>${response.data[i].from}</span></p> ${response.data[i].text}</div>`
         }
         if (response.data[i].type == "message" && response.data[i].to == "Todos") {
-            boxMensagem.innerHTML += `<div class="publicMessage">${response.data[i].time}<b>${response.data[i].from} </b><span> para <b>todos</b>:</span> ${response.data[i].text}</div>`
+            boxMensagem.innerHTML += `<div class="publicMessage"><p class="letra-time">(${response.data[i].time})</p> <p><span>${response.data[i].from}</span></p> <p>para</p> <span>todos: </span> ${response.data[i].text}</div>`
         }
         if (response.data[i].type == "message" && response.data[i].to != "Todos") {
-            boxMensagem.innerHTML += `<div class="publicMessage">${response.data[i].time}<b>${response.data[i].from} </b><span> para <b>${response.data[i].to}</b>:</span> ${response.data[i].text}</div>`
+            boxMensagem.innerHTML += `<div class="publicMessage"><p class="letra-time">(${response.data[i].time})</p> <span>${response.data[i].from} </span> <p> para </p> <b>${response.data[i].to}</b>: ${response.data[i].text}</div>`
         }
         if (response.data[i].type == "private_message") {
-            boxMensagem.innerHTML += `<div class="privateMessage">${response.data[i].time}<b>${response.data[i].from} </b><span> reservadamente para: <b>${response.data[i].to}</b>:</span> ${response.data[i].text}</div>`
+            boxMensagem.innerHTML += `<div class="privateMessage"> <p class="letra-time">(${response.data[i].time})</p> <span>${response.data[i].from}</span> <p> reservadamente </p> para: <b>${response.data[i].to}</b> ${response.data[i].text}</div>`
         }
         areaChat.scrollIntoView(false);
     }
@@ -85,7 +85,7 @@ function mandaMensagem() {
     messageToServer = axios.post(mensagens, mensagemEnviada);
     messageToServer.then((response) => {
         corpoMensagem = axios.post(mensagens);
-        /* toServer.then(mostraChat); */
+        toServer.then(mostraChat);
     });
     messageToServer.catch((error) => {
         window.location.reload();
